@@ -28,3 +28,5 @@ Capabilities — This can use the api of different sites to display rating infor
 Biggest unknowns — I am unsure how to implement the api of other sites into my site.
 
 Project links —
+https://github.com/stephenruelas155-coder/film-roulette-/issues
+https://github.com/stephenruelas155-coder/film-roulette-/milestones
