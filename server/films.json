@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "title": "Spider-man: Brand New Day",
+        "year": 2026,
+        "genre": "Action",
+        "director": "Destin Daniel Cretton"
+    }, 
+    {
+        "id": 2,
+        "title": "Intersellar",
+        "year": 2014,
+        "genre": "science fiction",
+        "director": "Christopher Nolan"
+    }, 
+    {
+        "id": 3,
+        "title": "Backrooms",
+        "year": 2026,
+        "genre": "Horror",
+        "director": "Kane Parsons"
+    }
+]
