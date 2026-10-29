@@ -17,9 +17,50 @@
             <a class="navbar-brand"> Search Films: </a>
             <input id="searchBox" class="form-control w-50" type="search" placeholder="Enter film title...">
             <div class="filter">
-                <button type="button" datafilter=""
+                <button type="button" datafilter="year">
+                 <div class="filter-window" id="yearWindow">
+                <strong>Sort by year</strong>
+
+                <select id="yearSort">
+                    <option value="">Default order</option>
+                    <option value="asc">Oldest to newest</option>
+                    <option value="desc">Newest to oldest</option>
+                </select>
+
+                <hr>
+
+                <strong>Choose years</strong>
+                <div id="yearOptions"></div>
             </div>
-    >
+        </div>
+
+
+        <div class="filter">
+            <span class="filter-label" data-filter="genre">
+                Genre
+            </span>
+
+            <div class="filter-window" id="genreWindow">
+                <div id="genreOptions"></div>
+            </div>
+        </div>
+
+
+        <div class="filter">
+            <span class="filter-label" data-filter="director">
+                Director
+            </span>
+
+            <div class="filter-window" id="directorWindow">
+                <div id="directorOptions"></div>
+            </div>
+        </div>
+
+        <button type="button" id="clearFilters">
+            Clear filters
+        </button>
+
+    </nav>
 
 <div id="filmCollection"></div>
 
