@@ -11,6 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
 const uri = process.env.MONGO_URI;
+const PORT = process.env.PORT || 3000;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -22,3 +23,6 @@ const client = new MongoClient(uri, {
 const db = client.db('collection');
 const collection = db.collection('films');
 
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
