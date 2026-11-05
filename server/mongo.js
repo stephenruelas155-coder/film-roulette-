@@ -13,6 +13,9 @@ const app = express();
 const uri = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
 
+app.use(express.static(join(__dirname, '../public')));
+app.use(express.json());
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
