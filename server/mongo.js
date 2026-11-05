@@ -13,8 +13,12 @@ const app = express();
 const uri = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static(join(__dirname, '../public')));
 app.use(express.json());
+app.use(express.static(join(__dirname, '../public')));
+app.get('/', (req, res) => {
+    res.sendFile(join(__dirname, '../public/home.html'));
+});
+
 
 const client = new MongoClient(uri, {
   serverApi: {
