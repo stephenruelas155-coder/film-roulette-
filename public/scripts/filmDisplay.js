@@ -124,7 +124,7 @@ function renderFilms() {
         return;
     }
 
-    results.forEach(film => {
+    results.forEach((film, index) => {
         const item = document.createElement("div");
 
         item.innerHTML = `
