@@ -171,19 +171,21 @@ document.getElementById("clearFilters").addEventListener("click", () => {
     renderFilms();
 });
 
-async function loadFilms() {
-    try {
-        const response = await fetch('/api/films-with-ratings');
+// Search titles
+searchBox.addEventListener("input", renderFilms);
 
-        if (!response.ok) {
-            throw new Error('Unable to load films');
-        }
+// Sort years
+yearSort.addEventListener("change", renderFilms);
 
-        const films = await response.json();
+// Clear filters
+document.getElementById("clearFilters").addEventListener("click", () => {
+    document.querySelectorAll(
+        '.filter-window input[type="checkbox"]'
+    ).forEach(checkbox => {
+        checkbox.checked = false;
+    });
 
-        displayFilms(films);
+    yearSort.value = "";
 
-    } catch (error) {
-        console.error(error);
-    }
-}
+    renderFilms();
+});
