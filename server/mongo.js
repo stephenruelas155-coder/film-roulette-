@@ -37,6 +37,14 @@ app.get('/api/films-with-ratings', async (req, res) => {
         const filePath = join(__dirname, '../database/films.json');
         const fileData = await readFile(filePath, 'utf8');
         const films = JSON.parse(fileData);
+        } catch (error) {
+    console.error("TMDB error:", error);
+
+    res.status(500).json({
+        message: "Unable to retrieve movie ratings",
+        error: error.message
+    });
+}
 
         // Look up each movie using its title
         const ratedFilms = await Promise.all(
