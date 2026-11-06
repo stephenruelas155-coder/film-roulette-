@@ -33,19 +33,68 @@ const collection = db.collection('films');
 
 app.get('/api/films-with-ratings', async (req, res) => {
     try {
-        // Read your existing films.json file
+        // Read films.json
         const filePath = join(__dirname, '../database/films.json');
         const fileData = await readFile(filePath, 'utf8');
         const films = JSON.parse(fileData);
-        } catch (error) {
-    console.error("TMDB error:", error);
 
-    res.status(500).json({
-        message: "Unable to retrieve movie ratings",
-        error: error.message
-    });
-}
+        // Look up each movie using TMDB
+        const ratedFilms = await Promise.all(
+            films.map(async (film) => {
 
+                const params = new URLSearchParams({
+                    query: film.title,
+                    include_adult: 'false',
+                    language: 'en-US'
+                });
+
+                // Include release year if available
+                if (film.year) {
+                    params.set('year', String(film.year));
+                }
+
+                const response = await fetch(
+                    `https://api.themoviedb.org/3/search/movie?${params}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`,
+                            accept: 'application/json'
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(`TMDB error: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Find matching movie title
+                const match = data.results.find(movie =>
+                    movie.title.toLowerCase() === film.title.toLowerCase()
+                ) || data.results[0];
+
+                return {
+                    ...film,
+                    tmdbId: match?.id ?? null,
+                    tmdbRating: match?.vote_average ?? null,
+                    tmdbVotes: match?.vote_count ?? null
+                };
+            })
+        );
+
+        // Send movies and ratings to frontend
+        res.json(ratedFilms);
+
+    } catch (error) {
+        console.error('TMDB error:', error);
+
+        res.status(500).json({
+            message: 'Unable to retrieve movie ratings',
+            error: error.message
+        });
+    }
+});
         // Look up each movie using its title
         const ratedFilms = await Promise.all(
             films.map(async (film) => {
