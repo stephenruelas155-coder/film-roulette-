@@ -90,6 +90,38 @@ app.get('/api/films-with-ratings', async (req, res) => {
     }
 });
 
+app.get('/api/wheel', async (req, res) => {
+    try {
+        const films = await collection.find().toArray();
+        res.json(films);
+    } catch (error) {
+        console.log(error);
+        res.send("Error getting movies");
+    }
+});
+
+app.post('/api/wheel', async (req, res) => {
+    try {
+        await collection.insertOne(req.body);
+        res.send("Movie added to wheel");
+    } catch (error) {
+        console.log(error);
+        res.send("Error adding movie");
+    }
+});
+
+app.delete('/api/wheel/:id', async (req, res) => {
+    try {
+        await collection.deleteOne({
+            _id: new ObjectId(req.params.id)
+        });
+
+        res.send("Movie removed from wheel");
+    } catch (error) {
+        console.log(error);
+        res.send("Error removing movie");
+    }
+});
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
