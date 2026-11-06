@@ -95,4 +95,8 @@ app.get('/api/films-with-ratings', async (req, res) => {
         });
     }
 });
-        
+
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
