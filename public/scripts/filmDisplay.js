@@ -138,6 +138,11 @@ function renderFilms() {
             <p>Year: ${film.year}</p>
             <p>Genre: ${film.genre}</p>
             <p>Director: ${film.director}</p>
+            <p>TMDB Rating: ${
+            film.tmdbRating !== null && film.tmdbRating !== undefined
+            ? film.tmdbRating.toFixed(1) + "/10"
+            : "Not rated"
+            }</p>
             <hr>
         `;
 
