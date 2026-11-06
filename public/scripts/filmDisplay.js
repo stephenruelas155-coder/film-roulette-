@@ -31,15 +31,16 @@ const availableDirectors = [
 ];
 
 // Grab data from films.json
-fetch("database/films.json")
-    .then(response => {
+async function loadFilms() {
+    try {
+        const response = await fetch('/api/films-with-ratings');
+
         if (!response.ok) {
-            throw new Error("Failed to load film data");
+            throw new Error("Unable to load films");
         }
 
-        return response.json();
-    })
-    .then(data => {
+        const data = await response.json();
+
         filmData = data;
 
         createOptions(availableYears, yearOptions, "year");
@@ -47,11 +48,15 @@ fetch("database/films.json")
         createOptions(availableDirectors, directorOptions, "director");
 
         renderFilms();
-    })
-    .catch(error => {
+
+    } catch (error) {
         console.error("Error loading films:", error);
         filmCollection.textContent = "Could not load films.";
-    });
+    }
+}
+
+// Load films when the page opens
+loadFilms();
 
 //checkboxes
 function createOptions(options, container, property) {
@@ -160,3 +165,20 @@ document.getElementById("clearFilters").addEventListener("click", () => {
 
     renderFilms();
 });
+
+async function loadFilms() {
+    try {
+        const response = await fetch('/api/films-with-ratings');
+
+        if (!response.ok) {
+            throw new Error('Unable to load films');
+        }
+
+        const films = await response.json();
+
+        displayFilms(films);
+
+    } catch (error) {
+        console.error(error);
+    }
+}
