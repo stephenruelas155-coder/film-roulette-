@@ -74,7 +74,6 @@ app.get('/api/films-with-ratings', async (req, res) => {
                     ...film,
                     tmdbId: match?.id ?? null,
                     tmdbRating: match?.vote_average ?? null,
-                    tmdbVotes: match?.vote_count ?? null
                 };
             })
         );
