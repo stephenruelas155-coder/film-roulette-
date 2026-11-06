@@ -129,6 +129,9 @@ function renderFilms() {
 
         item.innerHTML = `
             <h3>${film.title}</h3>
+            <button class="addToWheel" data-index="${index}">
+            Add to Wheel
+            </button>
             <p>Year: ${film.year}</p>
             <p>Genre: ${film.genre}</p>
             <p>Director: ${film.director}</p>
