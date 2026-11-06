@@ -30,7 +30,6 @@ const availableDirectors = [
     "Jordan Peele"
 ];
 
-// Grab data from films.json
 async function loadFilms() {
     try {
         const response = await fetch('/api/films-with-ratings');
@@ -55,10 +54,8 @@ async function loadFilms() {
     }
 }
 
-// Load films when the page opens
 loadFilms();
 
-//checkboxes
 function createOptions(options, container, property) {
     container.innerHTML = "";
 
@@ -79,14 +76,12 @@ function createOptions(options, container, property) {
     });
 }
 
-//checkbox selection
 function getSelected(property) {
     return [...document.querySelectorAll(
         `input[data-filter="${property}"]:checked`
     )].map(checkbox => checkbox.value);
 }
 
-// shows films based on search and filter
 function renderFilms() {
     const query = searchBox.value.trim().toLowerCase();
 
@@ -116,7 +111,6 @@ function renderFilms() {
                matchesDirector;
     });
 
-    //sort by year ascending or descending
     if (yearSort.value === "ascending") {
         results.sort((a, b) => a.year - b.year);
     } else if (yearSort.value === "descending") {
@@ -151,11 +145,8 @@ function renderFilms() {
 }
 
 
-
-//Search titles 
 searchBox.addEventListener("input", renderFilms);
 
-//Sort years based off search
 yearSort.addEventListener("change", renderFilms);
 
 
@@ -171,13 +162,10 @@ document.getElementById("clearFilters").addEventListener("click", () => {
     renderFilms();
 });
 
-// Search titles
 searchBox.addEventListener("input", renderFilms);
 
-// Sort years
 yearSort.addEventListener("change", renderFilms);
 
-// Clear filters
 document.getElementById("clearFilters").addEventListener("click", () => {
     document.querySelectorAll(
         '.filter-window input[type="checkbox"]'

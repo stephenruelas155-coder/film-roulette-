@@ -33,12 +33,10 @@ const collection = db.collection('films');
 
 app.get('/api/films-with-ratings', async (req, res) => {
     try {
-        // Read films.json
-        const filePath = join(__dirname, '../database/films.json');
+        const filePath = join(__dirname, '../public/database/films.json');
         const fileData = await readFile(filePath, 'utf8');
         const films = JSON.parse(fileData);
 
-        // Look up each movie using TMDB
         const ratedFilms = await Promise.all(
             films.map(async (film) => {
 
@@ -48,7 +46,6 @@ app.get('/api/films-with-ratings', async (req, res) => {
                     language: 'en-US'
                 });
 
-                // Include release year if available
                 if (film.year) {
                     params.set('year', String(film.year));
                 }
@@ -69,7 +66,6 @@ app.get('/api/films-with-ratings', async (req, res) => {
 
                 const data = await response.json();
 
-                // Find matching movie title
                 const match = data.results.find(movie =>
                     movie.title.toLowerCase() === film.title.toLowerCase()
                 ) || data.results[0];
@@ -83,7 +79,6 @@ app.get('/api/films-with-ratings', async (req, res) => {
             })
         );
 
-        // Send movies and ratings to frontend
         res.json(ratedFilms);
 
     } catch (error) {
