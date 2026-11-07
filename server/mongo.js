@@ -96,7 +96,10 @@ app.get('/api/wheel', async (req, res) => {
         res.json(films);
     } catch (error) {
         console.log(error);
-        res.send("Error getting movies");
+        res.status(500).json({
+            message: "Error getting movies",
+            error: error.message
+        });
     }
 });
 
