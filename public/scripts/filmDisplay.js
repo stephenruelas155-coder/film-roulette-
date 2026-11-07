@@ -6,6 +6,8 @@ const genreOptions = document.getElementById("genreOptions");
 const directorOptions = document.getElementById("directorOptions");
 const yearSort = document.getElementById("yearSort");
 
+const wheelCollection = document.getElementById("wheelCollection");
+
 let filmData = [];
 
 
@@ -129,7 +131,7 @@ function renderFilms() {
 
         item.innerHTML = `
             <h3>${film.title}</h3>
-            <button class="addToWheel" data-index="${index}">
+            <button class="addToWheel" data-index="${filmData.indexOf(film)}">
             Add to Wheel
             </button>
             <p>Year: ${film.year}</p>
@@ -180,3 +182,59 @@ document.getElementById("clearFilters").addEventListener("click", () => {
 
     renderFilms();
 });
+
+async function addToWheel(film) {
+    await fetch('/api/wheel', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(film)
+    });
+
+    loadWheel();
+}
+
+async function loadWheel() {
+    const response = await fetch('/api/wheel');
+    const films = await response.json();
+
+    wheelCollection.innerHTML = "";
+
+    films.forEach(film => {
+        wheelCollection.innerHTML += `
+            <div>
+                <h3>${film.title}</h3>
+                <p>${film.year}</p>
+
+                <button class="removeFromWheel" data-id="${film._id}">
+                    Remove
+                </button>
+            </div>
+        `;
+    });
+}
+
+async function removeFromWheel(id) {
+    await fetch(`/api/wheel/${id}`, {
+        method: 'DELETE'
+    });
+
+    loadWheel();
+}
+
+filmCollection.addEventListener('click', function(event) {
+    if (event.target.classList.contains('addToWheel')) {
+        const index = event.target.dataset.index;
+        addToWheel(filmData[index]);
+    }
+});
+
+wheelCollection.addEventListener('click', function(event) {
+    if (event.target.classList.contains('removeFromWheel')) {
+        const id = event.target.dataset.id;
+        removeFromWheel(id);
+    }
+});
+
+loadWheel();
