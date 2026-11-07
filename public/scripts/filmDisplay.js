@@ -150,11 +150,6 @@ function renderFilms() {
 }
 
 
-searchBox.addEventListener("input", renderFilms);
-
-yearSort.addEventListener("change", renderFilms);
-
-
 document.getElementById("clearFilters").addEventListener("click", () => {
     document.querySelectorAll(
         '.filter-window input[type="checkbox"]'
@@ -171,17 +166,6 @@ searchBox.addEventListener("input", renderFilms);
 
 yearSort.addEventListener("change", renderFilms);
 
-document.getElementById("clearFilters").addEventListener("click", () => {
-    document.querySelectorAll(
-        '.filter-window input[type="checkbox"]'
-    ).forEach(checkbox => {
-        checkbox.checked = false;
-    });
-
-    yearSort.value = "";
-
-    renderFilms();
-});
 
 async function addToWheel(film) {
     await fetch('/api/wheel', {
