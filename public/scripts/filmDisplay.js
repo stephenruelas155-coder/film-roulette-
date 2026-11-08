@@ -221,4 +221,37 @@ wheelCollection.addEventListener('click', function(event) {
     }
 });
 
+async function clearWheel() {
+    await fetch('/api/wheel', {
+        method: 'DELETE'
+    });
+
+    loadWheel();
+
+    document.getElementById("randomMovie").innerHTML = "";
+}
+
+async function spinWheel() {
+    const response = await fetch('/api/wheel');
+    const films = await response.json();
+
+    if (films.length === 0) {
+        document.getElementById("randomMovie").innerHTML =
+            "<p>Your wheel is empty!</p>";
+        return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * films.length);
+    const selectedMovie = films[randomIndex];
+
+    document.getElementById("randomMovie").innerHTML = `
+        <h3>Your Movie Is:</h3>
+        <h2>${selectedMovie.title}</h2>
+    `;
+}
+
 loadWheel();
+
+document.getElementById("clearWheel").addEventListener("click", clearWheel);
+
+document.getElementById("spinWheel").addEventListener("click", spinWheel);

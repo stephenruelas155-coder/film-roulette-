@@ -130,6 +130,16 @@ app.delete('/api/wheel/:id', async (req, res) => {
     }
 });
 
+app.delete('/api/wheel', async (req, res) => {
+    try {
+        await collection.deleteMany({});
+        res.send("Wheel cleared");
+    } catch (error) {
+        console.log(error);
+        res.send("Error clearing wheel");
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
