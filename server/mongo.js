@@ -31,6 +31,10 @@ const client = new MongoClient(uri, {
 const db = client.db('collection');
 const collection = db.collection('films');
 
+await client.connect();
+
+console.log("Connected to MongoDB");
+
 app.get('/api/films-with-ratings', async (req, res) => {
     try {
         const filePath = join(__dirname, '../public/database/films.json');
