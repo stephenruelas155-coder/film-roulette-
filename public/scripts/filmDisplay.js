@@ -189,7 +189,6 @@ async function loadWheel() {
         wheelCollection.innerHTML += `
             <div>
                 <h3>${film.title}</h3>
-                <p>${film.year}</p>
 
                 <button class="removeFromWheel" data-id="${film._id}">
                     Remove
