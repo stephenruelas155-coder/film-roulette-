@@ -115,9 +115,9 @@ function renderFilms() {
     });
 
     if (yearSort.value === "ascending") {
-        results.sort((a, b) => a.year - b.year);
+        results.sort((a, b) => Number(a.year) - Number(b.year));
     } else if (yearSort.value === "descending") {
-        results.sort((a, b) => b.year - a.year);
+        results.sort((a, b) => Number(b.year) - Number(a.year));
     }
 
     filmCollection.innerHTML = "";
