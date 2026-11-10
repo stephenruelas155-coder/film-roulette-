@@ -18,6 +18,10 @@ to watch. John goes through many websites scrolling through huge ammounts of mvo
 by even the handful of movies he has saved but is indecisve in what order he wants to watch them. 
 
 code links
+homepage https://github.com/stephenruelas155-coder/film-roulette-/blob/main/public/home.html
+scripts https://github.com/stephenruelas155-coder/film-roulette-/blob/main/public/scripts/filmDisplay.js
+database https://github.com/stephenruelas155-coder/film-roulette-/blob/main/public/scripts/filmDisplay.js
+mongo https://github.com/stephenruelas155-coder/film-roulette-/blob/main/server/mongo.js
 
 issue links
 https://github.com/stephenruelas155-coder/film-roulette-/issues/
