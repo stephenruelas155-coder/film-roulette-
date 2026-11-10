@@ -1,5 +1,11 @@
 Timing
-
+opening 25 sec
+user story 1 min
+website description 1 min
+live demo 2 min
+going through the code 2 min
+future plans 1 min
+questions / feedback 1 min
 
 Opening
 Film Roulette is a website where users are able to browse a collection of movies and search them based off title, director, genre, and year. 
