@@ -6,12 +6,15 @@ const genreOptions = document.getElementById("genreOptions");
 const directorOptions = document.getElementById("directorOptions");
 const yearSort = document.getElementById("yearSort");
 
+const wheelCollection = document.getElementById("wheelCollection");
+
 let filmData = [];
 
 
 const availableYears = [
     2014,
     2020,
+    2021,
     2022,
     2026
 ];
@@ -30,16 +33,16 @@ const availableDirectors = [
     "Jordan Peele"
 ];
 
-// Grab data from films.json
-fetch("database/films.json")
-    .then(response => {
+async function loadFilms() {
+    try {
+        const response = await fetch('/api/films-with-ratings');
+
         if (!response.ok) {
-            throw new Error("Failed to load film data");
+            throw new Error("Unable to load films");
         }
 
-        return response.json();
-    })
-    .then(data => {
+        const data = await response.json();
+
         filmData = data;
 
         createOptions(availableYears, yearOptions, "year");
@@ -47,13 +50,15 @@ fetch("database/films.json")
         createOptions(availableDirectors, directorOptions, "director");
 
         renderFilms();
-    })
-    .catch(error => {
+
+    } catch (error) {
         console.error("Error loading films:", error);
         filmCollection.textContent = "Could not load films.";
-    });
+    }
+}
 
-//checkboxes
+loadFilms();
+
 function createOptions(options, container, property) {
     container.innerHTML = "";
 
@@ -74,14 +79,12 @@ function createOptions(options, container, property) {
     });
 }
 
-//checkbox selection
 function getSelected(property) {
     return [...document.querySelectorAll(
         `input[data-filter="${property}"]:checked`
     )].map(checkbox => checkbox.value);
 }
 
-// shows films based on search and filter
 function renderFilms() {
     const query = searchBox.value.trim().toLowerCase();
 
@@ -111,10 +114,9 @@ function renderFilms() {
                matchesDirector;
     });
 
-    //sort by year ascending or descending
-    if (yearSort.value === "ascending") {
+    if (yearSort.value === "asc") {
         results.sort((a, b) => a.year - b.year);
-    } else if (yearSort.value === "descending") {
+    } else if (yearSort.value === "desc") {
         results.sort((a, b) => b.year - a.year);
     }
 
@@ -125,28 +127,28 @@ function renderFilms() {
         return;
     }
 
-    results.forEach(film => {
+    results.forEach((film, index) => {
         const item = document.createElement("div");
 
         item.innerHTML = `
             <h3>${film.title}</h3>
+            <button class="addToWheel" data-index="${filmData.indexOf(film)}">
+            Add to Wheel
+            </button>
             <p>Year: ${film.year}</p>
             <p>Genre: ${film.genre}</p>
             <p>Director: ${film.director}</p>
+            <p>TMDB Rating: ${
+            film.tmdbRating !== null && film.tmdbRating !== undefined
+            ? film.tmdbRating.toFixed(1) + "/10"
+            : "Not rated"
+            }</p>
             <hr>
         `;
 
         filmCollection.appendChild(item);
     });
 }
-
-
-
-//Search titles 
-searchBox.addEventListener("input", renderFilms);
-
-//Sort years based off search
-yearSort.addEventListener("change", renderFilms);
 
 
 document.getElementById("clearFilters").addEventListener("click", () => {
@@ -160,3 +162,96 @@ document.getElementById("clearFilters").addEventListener("click", () => {
 
     renderFilms();
 });
+
+searchBox.addEventListener("input", renderFilms);
+
+yearSort.addEventListener("change", renderFilms);
+
+
+async function addToWheel(film) {
+    await fetch('/api/wheel', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(film)
+    });
+
+    loadWheel();
+}
+
+async function loadWheel() {
+    const response = await fetch('/api/wheel');
+    const films = await response.json();
+
+    wheelCollection.innerHTML = "";
+
+    films.forEach(film => {
+        wheelCollection.innerHTML += `
+            <div>
+                <h3>${film.title}</h3>
+
+                <button class="removeFromWheel" data-id="${film._id}">
+                    Remove
+                </button>
+            </div>
+        `;
+    });
+}
+
+async function removeFromWheel(id) {
+    await fetch(`/api/wheel/${id}`, {
+        method: 'DELETE'
+    });
+
+    loadWheel();
+}
+
+filmCollection.addEventListener('click', function(event) {
+    if (event.target.classList.contains('addToWheel')) {
+        const index = event.target.dataset.index;
+        addToWheel(filmData[index]);
+    }
+});
+
+wheelCollection.addEventListener('click', function(event) {
+    if (event.target.classList.contains('removeFromWheel')) {
+        const id = event.target.dataset.id;
+        removeFromWheel(id);
+    }
+});
+
+async function clearWheel() {
+    await fetch('/api/wheel', {
+        method: 'DELETE'
+    });
+
+    loadWheel();
+
+    document.getElementById("randomMovie").innerHTML = "";
+}
+
+async function spinWheel() {
+    const response = await fetch('/api/wheel');
+    const films = await response.json();
+
+    if (films.length === 0) {
+        document.getElementById("randomMovie").innerHTML =
+            "<p>Your wheel is empty!</p>";
+        return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * films.length);
+    const selectedMovie = films[randomIndex];
+
+    document.getElementById("randomMovie").innerHTML = `
+        <h3>Your Movie Is:</h3>
+        <h2>${selectedMovie.title}</h2>
+    `;
+}
+
+loadWheel();
+
+document.getElementById("clearWheel").addEventListener("click", clearWheel);
+
+document.getElementById("spinWheel").addEventListener("click", spinWheel);

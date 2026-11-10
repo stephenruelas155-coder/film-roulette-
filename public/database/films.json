@@ -8,9 +8,9 @@
     }, 
     {
         "id": 2,
-        "title": "Intersellar",
+        "title": "Interstellar",
         "year": 2014,
-        "genre": "science fiction",
+        "genre": "Science fiction",
         "director": "Christopher Nolan"
     }, 
     {
@@ -19,5 +19,19 @@
         "year": 2026,
         "genre": "Horror",
         "director": "Kane Parsons"
+    },
+    {
+        "id": 4,
+        "title": "Inception",
+        "year": 2010,
+        "genre": "Science fiction",
+        "director": "Christopher Nolan"
+    },
+    {
+        "id": 5,
+        "title": "Shang-Chi and the Legend of the Ten Rings",
+        "year": 2021,
+        "genre": "Action",
+        "director": "Destin Daniel Cretton"
     }
 ]
