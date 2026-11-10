@@ -14,6 +14,7 @@ let filmData = [];
 const availableYears = [
     2014,
     2020,
+    2021,
     2022,
     2026
 ];
