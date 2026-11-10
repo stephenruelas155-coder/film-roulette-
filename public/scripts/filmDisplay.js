@@ -114,10 +114,10 @@ function renderFilms() {
                matchesDirector;
     });
 
-    if (yearSort.value === "ascending") {
-        results.sort((a, b) => Number(a.year) - Number(b.year));
-    } else if (yearSort.value === "descending") {
-        results.sort((a, b) => Number(b.year) - Number(a.year));
+    if (yearSort.value === "asc") {
+        results.sort((a, b) => a.year - b.year);
+    } else if (yearSort.value === "desc") {
+        results.sort((a, b) => b.year - a.year);
     }
 
     filmCollection.innerHTML = "";
