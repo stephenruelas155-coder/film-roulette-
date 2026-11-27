@@ -1,4 +1,4 @@
 {
     "username": "admin",
-    "passwordHash": "REPLACE_WITH_BCRYPT_HASH"
+    "passwordHash": "$2b$12$zrBGMe3iRuE2pRl.6zQRMumTRPJNiUxp/jEKTP30O71LkB0s7HVuW"
 }
